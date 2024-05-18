@@ -22,14 +22,23 @@ class WidgetToImage {
       double devicePixelRatio = 1.0,
       double pixelRatio = 1.0}) async {
     final repaintBoundary = RenderRepaintBoundary();
+    final realSize = BoxConstraints(
+      maxHeight: size.height,
+      maxWidth: size.width,
+      minHeight: size.height,
+      minWidth: size.width,
+    );
 
     final renderView = RenderView(
-      child: RenderPositionedBox(alignment: alignment, child: repaintBoundary),
+      child: RenderPositionedBox(
+        alignment: alignment,
+        child: repaintBoundary,
+      ),
       configuration: ViewConfiguration(
-        size: size,
+        logicalConstraints: realSize,
         devicePixelRatio: devicePixelRatio,
       ),
-      window: WidgetsBinding.instance!.platformDispatcher.views.first,
+      view: WidgetsBinding.instance.platformDispatcher.views.first,
     );
 
     final pipelineOwner = PipelineOwner();
